@@ -2,12 +2,7 @@
   "name": "smart-gym",
   "version": "1.0.0",
   "private": true,
-  "homepage": ".",
-  "engines": {
-    "node": "18.x"
-  },
-  "dependencies": {},
   "scripts": {
-    "build": "npm install --prefix ./frontend && npm run build --prefix ./frontend"
+    "build": "cd frontend && npm install && npm run build"
   }
 }
