@@ -1,5 +1,6 @@
 import { connectDB } from '../../config/db.js';
 import { Member } from '../../models/schemas.js';
+import { auth } from '../../middleware/auth.js';
 
 export default async function handler(req, res) {
   // Enable CORS
@@ -21,21 +22,62 @@ export default async function handler(req, res) {
 
     // GET /api/members - Get all members
     if (req.method === 'GET') {
-      const members = await Member.find();
-      return res.status(200).json(members);
+      const members = await Member.find().sort({ createdAt: -1 });
+      return res.status(200).json({
+        success: true,
+        data: members,
+        count: members.length
+      });
     }
 
-    // POST /api/members - Create new member
+    // POST /api/members - Create new member (Admin only)
     if (req.method === 'POST') {
+      const decoded = auth(req, res);
+      if (!decoded) return;
+
+      if (decoded.role !== 'admin') {
+        return res.status(403).json({
+          success: false,
+          message: 'Only admins can add members'
+        });
+      }
+
       const { name, plan, status } = req.body;
-      const newMember = new Member({ name, plan, status });
-      await newMember.save();
-      return res.status(201).json({ message: "Member Added", member: newMember });
+
+      // Validation
+      if (!name || !plan || !status) {
+        return res.status(400).json({
+          success: false,
+          message: 'Name, plan, and status are required'
+        });
+      }
+
+      try {
+        const newMember = new Member({ name, plan, status });
+        await newMember.save();
+        return res.status(201).json({
+          success: true,
+          message: 'Member added successfully',
+          data: newMember
+        });
+      } catch (validationErr) {
+        return res.status(400).json({
+          success: false,
+          message: validationErr.message || 'Validation error'
+        });
+      }
     }
 
-    return res.status(405).json({ message: 'Method not allowed' });
+    return res.status(405).json({
+      success: false,
+      message: 'Method not allowed'
+    });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
+    console.error('Members API error:', err);
+    return res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: process.env.NODE_ENV === 'development' ? err.message : undefined
+    });
   }
 }
