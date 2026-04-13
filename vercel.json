@@ -2,11 +2,6 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/build",
   "public": true,
-  "framework": "react",
-  "env": {
-    "MONGODB_URI": "@MONGODB_URI",
-    "JWT_SECRET": "@JWT_SECRET"
-  },
   "functions": {
     "api/**/*.js": {
       "runtime": "nodejs18.x"
@@ -21,5 +16,9 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "env": [
+    "MONGODB_URI",
+    "JWT_SECRET"
   ]
 }
