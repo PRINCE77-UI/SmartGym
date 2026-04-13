@@ -2,11 +2,9 @@
   "name": "smart-gym",
   "version": "1.0.0",
   "description": "Smart GYM Management System",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "build": "cd frontend && npm install && npm run build"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "build": "npm install --prefix ./frontend && npm run build --prefix ./frontend",
+    "start": "npm start --prefix ./frontend"
+  }
 }
