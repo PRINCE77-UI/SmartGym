@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import apiClient from "../api/client";
 // import { FaArrowLeft } from "react-icons/fa";
 
 function Register() {
@@ -17,7 +17,7 @@ function Register() {
       return;
     }
 
-    const res = await axios.post("http://localhost:5000/register", {
+    const res = await apiClient.post("/auth/register", {
       name,
       email,
       password,

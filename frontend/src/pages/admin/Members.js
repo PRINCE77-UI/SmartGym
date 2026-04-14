@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiClient from "../../api/client";
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
@@ -17,7 +17,7 @@ function Members() {
   }, []);
 
   const fetchMembers = async () => {
-    const res = await axios.get("http://localhost:5000/members");
+    const res = await apiClient.get("/members");
     setMembers(res.data);
   };
 
@@ -30,13 +30,13 @@ function Members() {
     if (editIndex !== null) {
       const member = members[editIndex];
 
-      await axios.put(`http://localhost:5000/members/${member._id}`, {
+      await apiClient.put(`/members/${member._id}`, {
         name,
         plan,
         status
       });
     } else {
-      await axios.post("http://localhost:5000/members", {
+      await apiClient.post("/members", {
         name,
         plan,
         status
@@ -66,7 +66,7 @@ function Members() {
   const deleteMember = async (index) => {
     const member = members[index];
 
-    await axios.delete(`http://localhost:5000/members/${member._id}`);
+    await apiClient.delete(`/members/${member._id}`);
 
     fetchMembers();
   };

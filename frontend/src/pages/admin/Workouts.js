@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiClient from "../../api/client";
 import { useEffect, useState } from "react";
 import { FaDumbbell, FaPlus, FaEdit, FaTrash } from "react-icons/fa";
 
@@ -21,7 +21,7 @@ function Workouts() {
   }, []);
 
   const fetchWorkouts = async () => {
-    const res = await axios.get("http://localhost:5000/workouts");
+    const res = await apiClient.get("/workouts");
     setWorkouts(res.data);
   };
 
@@ -38,9 +38,9 @@ function Workouts() {
     if (editIndex !== null) {
       const workout = workouts[editIndex];
 
-      await axios.put(`http://localhost:5000/workouts/${workout._id}`, formData);
+      await apiClient.put(`/workouts/${workout._id}`, formData);
     } else {
-      await axios.post("http://localhost:5000/workouts", formData);
+      await apiClient.post("/workouts", formData);
     }
 
     fetchWorkouts();
@@ -67,7 +67,7 @@ function Workouts() {
   const handleDelete = async (index) => {
     const workout = workouts[index];
 
-    await axios.delete(`http://localhost:5000/workouts/${workout._id}`);
+    await apiClient.delete(`/workouts/${workout._id}`);
     fetchWorkouts();
   };
 

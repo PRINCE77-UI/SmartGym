@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../../api/client";
 import { FaDumbbell, FaFire, FaClock, FaArrowRight } from "react-icons/fa";
 
 function Dashboard() {
@@ -10,16 +10,11 @@ function Dashboard() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const res = await apiClient.get("/users/profile");
 
-        const res = await axios.get("http://localhost:5000/user", {
-          headers: {
-            Authorization: token,
-          },
-        });
-
-        setUser(res.data);
-        setUserName(res.data.name);
+        const userData = res.data.data || res.data;
+        setUser(userData);
+        setUserName(userData.name);
       } catch (err) {
         console.log(err);
       }

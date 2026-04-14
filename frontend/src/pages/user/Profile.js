@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import apiClient from "../../api/client";
 import { FaUser, FaEnvelope, FaDumbbell, FaFire } from "react-icons/fa";
 
 function Profile() {
@@ -13,13 +13,7 @@ function Profile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
-
-        const res = await axios.get("http://localhost:5000/user", {
-          headers: {
-            Authorization: token,
-          },
-        });
+        const res = await apiClient.get("/users/profile");
 
         setUser(res.data);
       } catch (err) {
@@ -42,20 +36,15 @@ function Profile() {
   };
   const handleUpdate = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const res = await apiClient.put("/users/profile", formData);
 
-      const res = await axios.put("http://localhost:5000/user", formData, {
-        headers: {
-          Authorization: token,
-        },
-      });
-
-      setUser(res.data); // UI update
+      const userData = res.data.data || res.data;
+      setUser(userData); // UI update
       setShowForm(false);
 
       // localStorage update
-      localStorage.setItem("name", res.data.name);
-      localStorage.setItem("email", res.data.email);
+      localStorage.setItem("name", userData.name);
+      localStorage.setItem("email", userData.email);
     } catch (err) {
       console.log(err);
     }

@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import apiClient from '../api/client';
 
 function Login() {
     const [message, setMessage] = useState("");
@@ -9,7 +9,7 @@ function Login() {
   const navigate = useNavigate();
 
  const handleLogin = async () => {
-  const res = await axios.post('http://localhost:5000/login', {
+  const res = await apiClient.post('/auth/login', {
     email,
     password
   });

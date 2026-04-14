@@ -2,6 +2,10 @@
   "name": "smart-gym",
   "version": "1.0.0",
   "scripts": {
-    "build": "cd frontend && npm run build"
+    "build": "cd frontend && npm install && npm run build",
+    "start": "node api/server.js",
+    "dev:backend": "cd backend && npm start",
+    "dev:frontend": "cd frontend && npm start",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
   }
 }

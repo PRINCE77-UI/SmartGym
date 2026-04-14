@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiClient from "../../api/client";
 import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
@@ -18,7 +18,7 @@ function Trainers() {
   }, []);
 
   const fetchTrainers = async () => {
-    const res = await axios.get("http://localhost:5000/trainers");
+    const res = await apiClient.get("/trainers");
     setTrainers(res.data);
   };
 
@@ -31,13 +31,13 @@ function Trainers() {
     if (editIndex !== null) {
       const trainer = trainers[editIndex];
 
-      await axios.put(`http://localhost:5000/trainers/${trainer._id}`, {
+      await apiClient.put(`/trainers/${trainer._id}`, {
         name,
         specialization,
         status
       });
     } else {
-      await axios.post("http://localhost:5000/trainers", {
+      await apiClient.post("/trainers", {
         name,
         specialization,
         status
@@ -68,7 +68,7 @@ function Trainers() {
   const deleteTrainer = async (index) => {
     const trainer = trainers[index];
 
-    await axios.delete(`http://localhost:5000/trainers/${trainer._id}`);
+    await apiClient.delete(`/trainers/${trainer._id}`);
 
     fetchTrainers();
   };
