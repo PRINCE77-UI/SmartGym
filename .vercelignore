@@ -1,2 +1,3 @@
-backend
-
+backend/.env
+backend/MONGODB_ATLAS_SETUP.md
+backend/package-lock.json   
