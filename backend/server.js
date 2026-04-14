@@ -47,6 +47,9 @@ const userSchema = new mongoose.Schema({
 });
 const User = mongoose.model('User', userSchema);
 
+app.get('/', async (req, res) => {
+  res.send("Welcome to Smart GYM API");
+});
 // Step 4: Register
 app.post('/register', async (req, res) => {
   try {
@@ -295,3 +298,4 @@ app.delete("/workouts/:id", async (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// module.exports = app;
